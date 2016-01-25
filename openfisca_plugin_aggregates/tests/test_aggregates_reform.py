@@ -58,11 +58,13 @@ def test_aggregates_reform(data_year = 2009, year = 2013, reform = None):
 
 
 if __name__ == '__main__':
-    from openfisca_france.reforms import plf2015
-    reform = plf2015.build_reform(base.france_data_tax_benefit_system)
+    from openfisca_france.reforms import allocations_familiales_imposables as reform_to_test
+    reform = reform_to_test.build_reform(base.france_data_tax_benefit_system)
 
     import logging
     log = logging.getLogger(__name__)
     import sys
     logging.basicConfig(level = logging.INFO, stream = sys.stdout)
     aggregates, base_data_frame = test_aggregates_reform(data_year = 2009, year = 2013, reform = reform)
+
+    print aggregates, base_data_frame

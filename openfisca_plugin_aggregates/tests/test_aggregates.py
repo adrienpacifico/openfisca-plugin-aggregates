@@ -54,3 +54,4 @@ if __name__ == '__main__':
     import sys
     logging.basicConfig(level = logging.INFO, stream = sys.stdout)
     df = test_aggregates()
+    print df
