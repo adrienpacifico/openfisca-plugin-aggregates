@@ -125,8 +125,8 @@ class Aggregates(object):
                     continue
 
                 data_frame = pandas.DataFrame()
-                for variable in self.varlist:
-                    variable_data_frame = self.compute_variable_aggregates(
+                for variable in self.varlist:                                       # TODO : change for compute variable on a monthly basis here !
+                    variable_data_frame = self.compute_variable_aggregates(         # TODO : use to produce a global dataframe based on results of simulation
                         variable, filter_by = filter_by, simulation_type = simulation_type)
                     data_frame = pandas.concat((data_frame, variable_data_frame))
                 data_frame_by_simulation_type[simulation_type] = data_frame.copy()
