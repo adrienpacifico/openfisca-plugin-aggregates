@@ -77,7 +77,7 @@ class Aggregates(object):
         else:
             print 'loading reform_simulation'
             if not survey_scenario.simulation:
-                survey_scenario.new_simulation()
+                survey_scenario.new_simulation() #TODO : mensualized Comprendre
             self.reform_simulation = survey_scenario.simulation
 
             if survey_scenario.reference_tax_benefit_system is not None:
@@ -195,6 +195,24 @@ class Aggregates(object):
             weight, simulation_type)
         # amounts and beneficiaries from current data and default data if exists
         # Build weights for each entity
+
+        #### Modified Adrien
+        import ipdb; ipdb.set_trace()
+
+
+
+
+
+
+
+
+
+        ######
+
+
+
+
+
         data = pandas.DataFrame({
             variable: simulation.calculate_add(variable),
             weight: simulation.calculate(weight),

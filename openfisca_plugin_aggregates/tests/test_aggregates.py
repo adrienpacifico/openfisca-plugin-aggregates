@@ -25,7 +25,7 @@
 
 from openfisca_france_data.tests import base
 from openfisca_france_data.surveys import SurveyScenario
-from openfisca_france_data.input_data_builders import get_input_data_frame
+from openfisca_france_data.input_data_builders import get_input_data_frame, get_monthly_input_data_frame #TODO : mensualized make a global solution for monthly and period
 from openfisca_plugin_aggregates.aggregates import Aggregates
 
 
@@ -40,13 +40,8 @@ from openfisca_france_data.model.base import TaxBenefitSystem
 
 def create_survey_scenario(year = None):
     assert year is not None
-    input_data_frame = get_input_data_frame(year)
+    input_data_frame = get_input_data_frame(year) #get_input_data_frame(year)  #TODO : mensualized modifié ! Attention !
     assert "wprm" in input_data_frame.columns
-
-
-    #import ipdb ; ipdb.set_trace()
-
-
 
 
     survey_scenario = SurveyScenario().init_from_data_frame(   #TODO : comprendre les import du taxbenefit et où  est ajoutée la variable weight
