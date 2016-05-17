@@ -34,8 +34,6 @@ import openfisca_france
 OFF_TBS = openfisca_france.init_country()
 openfisca_france_tax_benefit_system = OFF_TBS()
 
-from openfisca_france_data.model.base import TaxBenefitSystem
-
 
 
 def create_survey_scenario(year = None):
@@ -53,8 +51,7 @@ def create_survey_scenario(year = None):
 
     survey_scenario = SurveyScenario().init_from_data_frames_by_period(   #TODO : comprendre les import du taxbenefit et où  est ajoutée la variable weight
         input_data_frames_by_periods = dataframe_by_periods,
-        tax_benefit_system = TaxBenefitSystem(),
-        #tax_benefit_system = base.france_data_tax_benefit_system,
+        tax_benefit_system = base.france_data_tax_benefit_system,
         year = year,
         )
     return survey_scenario
@@ -64,6 +61,7 @@ def test_aggregates(year = 2009):
     survey_scenario = create_survey_scenario(year)
     aggregates = Aggregates(survey_scenario = survey_scenario)
     aggregates.compute_aggregates()
+    #aggregates.compute_specific_variables()
     return aggregates.base_data_frame
 
 

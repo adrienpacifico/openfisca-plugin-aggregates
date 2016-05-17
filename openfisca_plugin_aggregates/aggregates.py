@@ -171,7 +171,88 @@ class Aggregates(object):
             u"Données d'enquêtes de l'année %s" % str(self.simulation.input_table.survey_year),
             ])
 
-    def compute_variable_aggregates(self, variable, filter_by = None, simulation_type = 'reference'):
+    def compute_variable_aggregates(self, variable, filter_by = None, simulation_type = 'reference'): #TODO : Mensualize , modifier ou s'insipirer de ça pour faire un calcul par variable
+        """
+        Returns aggregate spending, and number of beneficiaries
+        for the relevant entity level
+
+        Parameters
+        ----------
+        variable : string
+                   name of the variable aggregated according to its entity
+        filter_by : string
+                    name of the variable to filter by
+        simulation_type : string
+                          reference or reform or actual
+        """
+        assert simulation_type in ['reference', 'reform']
+        prefixed_simulation = '{}_simulation'.format(simulation_type)
+        simulation = getattr(self, prefixed_simulation)
+        column_by_name = simulation.tax_benefit_system.column_by_name
+        column = column_by_name[variable]
+        weight = self.weight_column_name_by_entity_key_plural[column.entity_key_plural]
+        assert weight in column_by_name, "{} not a variable of the {} tax_benefit_system".format(
+            weight, simulation_type)
+        # amounts and beneficiaries from current data and default data if exists
+        # Build weights for each entity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #import ipdb; ipdb.set_trace()
+
+
+        ######
+
+
+
+
+
+        data = pandas.DataFrame({
+            variable: simulation.calculate_add(variable),
+            weight: simulation.calculate(weight),
+            })
+
+        filter_dummy = simulation.calculate("{}_{}".format(filter_by, column.entity_key_plural))
+
+        try:
+            amount = int(
+                (data[variable] * data[weight] * filter_dummy / 10 ** 6).sum().round()
+                )
+        except:
+            amount = nan
+        try:
+            beneficiaries = int(
+                ((data[variable] != 0) * data[weight] * filter_dummy / 10 ** 3).sum().round()
+                )
+        except:
+            beneficiaries = nan
+
+        variable_data_frame = pandas.DataFrame(
+            data = {
+                'label': column_by_name[variable].label,
+                'entity': column_by_name[variable].entity_key_plural,
+                '{}_amount'.format(simulation_type): amount,
+                '{}_beneficiaries'.format(simulation_type): beneficiaries,
+                },
+            index = [variable],
+            )
+
+        return variable_data_frame
+
+
+###### Mensualized
+    def compute_specific_variables(self, variable, filter_by = None, simulation_type = 'reference'): #TODO : Mensualize , modifier ou s'insipirer de ça pour faire un calcul par variable
         """
         Returns aggregate spending, and number of beneficiaries
         for the relevant entity level
@@ -244,6 +325,9 @@ class Aggregates(object):
             )
 
         return variable_data_frame
+###### end mensualized
+
+
 
     def load_amounts_from_file(self, filename = None, year = None):
         '''
